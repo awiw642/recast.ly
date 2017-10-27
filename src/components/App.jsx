@@ -1,38 +1,57 @@
+/*jshint esversion: 6 */
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      videoList = [],
-      videoSelected
+      videos: [],
+      videoSelected: null
     };
   }
+
+  componentDidMount() {
+    this.findYoutubeVideos('french bulldogs');
+  }
+
+  findYoutubeVideos(query) {
+    var options = {
+      key: this.props.API_KEY,
+      query: query
+    };
+
+    this.props.searchYouTube(options, (videos) =>
+    this.setState({
+        videos: videos,
+        videoSelected: videos[0]
+      })
+    );
+  }
+
+  playVideo(video) {
+    this.setState({
+      videoSelected: video
+    });
+  }
+
   render () {
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes there</h5></div>
+            <Search search = {this.findYoutubeVideos.bind(this)}/>
           </div>
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <div><h5><em>videoPlayer</em> view goes here</h5></div>
+            <VideoPlayer video={this.state.videoSelected} />
           </div>
           <div className="col-md-5">
-            <div><h5><em>videoList</em> <VideoList ></h5></div>
+            <VideoList videos = {this.state.videos} playVideo={this.playVideo.bind(this)}/>
           </div>
         </div>
       </div>
     );
   }
 }
-
-
-
-
-
-
-
 // In the ES6 spec, files are "modules" and do not share a top-level scope
 // `var` declarations will only exist globally where explicitly defined
 window.App = App;
