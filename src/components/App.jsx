@@ -37,7 +37,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search search = {this.findYoutubeVideos.bind(this)}/>
+            <Search search={this.findYoutubeVideos.bind(this)}/>
           </div>
         </nav>
         <div className="row">
